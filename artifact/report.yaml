@@ -1,0 +1,38 @@
+data_types:
+  Description:
+    status: Pass
+  Instructor:
+    status: Pass
+  Keywords:
+    status: Pass
+  Learn:
+    status: Pass
+  Title:
+    status: Pass
+  course_id:
+    status: Pass
+length_constraints:
+  Description:
+    status: Pass
+  Instructor:
+    status: Pass
+  Keywords:
+    status: Pass
+  Learn:
+    status: Pass
+  Title:
+    status: Pass
+missing_values:
+  Instructor:
+    reason: 134 missing values found
+    status: Fail
+  Keywords:
+    reason: 3 missing values found
+    status: Fail
+  Learn:
+    reason: 6 missing values found
+    status: Fail
+status: Fail
+unique_constraints:
+  course_id:
+    status: Pass

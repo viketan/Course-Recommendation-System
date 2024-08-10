@@ -3,4 +3,5 @@ numpy
 scikit-learn
 pymongo
 python-dotenv
+streamlit
 #-e .

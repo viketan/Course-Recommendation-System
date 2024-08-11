@@ -6,6 +6,7 @@ import numpy as np
 from sklearn.feature_extraction.text import TfidfVectorizer
 import sys
 import joblib
+from scipy.sparse import save_npz
 
 class DataTransformation:
     def __init__(self):
@@ -27,11 +28,11 @@ class DataTransformation:
             df['combined_text'] = df['Title'] + " " + df['Description'] + " " + df['Instructor'] + " " + df['Learn'] + " " + df['Keywords']
 
             logger.info("Vectorizing text data using TF-IDF.")
-            tfidf_vectorizer = TfidfVectorizer(stop_words='english', ngram_range=(1, 3), max_features=2000)
+            tfidf_vectorizer = TfidfVectorizer(stop_words='english', ngram_range=(1, 3), max_features=5000)
             tfidf_matrix = tfidf_vectorizer.fit_transform(df['combined_text'])
 
             logger.info("TF-IDF vectorization completed successfully.")
-            return tfidf_vectorizer,tfidf_matrix.toarray()
+            return tfidf_vectorizer,tfidf_matrix
         except Exception as e:
             logger.exception(f"Error occurred during TF-IDF vectorization: {e}")
             raise CustomException(e, sys)
@@ -76,7 +77,7 @@ class DataTransformation:
             tfidf_vectorizer, matrix = self.get_vectors(df)
             
             # Save the NumPy array to a CSV file
-            np.savetxt(self.artifact.vector_filepath, matrix, delimiter=",", fmt='%d')
+            save_npz(self.artifact.vector_filepath, matrix)
             logger.info(f"Array saved to {self.artifact.vector_filepath} successfully!")
 
             # Save the TfidfVectorizer object for later use

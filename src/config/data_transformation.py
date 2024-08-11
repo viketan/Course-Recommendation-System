@@ -5,5 +5,5 @@ class DataTransformationInput():
     course_filepath: str = os.path.join('artifact','courses.csv')
 
 class DataTransformationArtifact():
-    vector_filepath: str =  os.path.join('artifact','tf-idf.csv')
+    vector_filepath: str =  os.path.join('artifact','tf-idf.npz')
     vectorizer_filepath: str = os.path.join('artifact','vectorizer.pkl')

@@ -8,6 +8,7 @@ import sys
 import numpy as np
 from scipy.sparse.linalg import svds
 from scipy.sparse import csr_matrix
+from scipy.sparse import load_npz
 
 class Prediction:
     def __init__(self):
@@ -19,7 +20,7 @@ class Prediction:
             self.users = pd.read_csv(self.input.users_filepath)
             self.ratings = pd.read_csv(self.input.ratings_filepath)
             self.vectorizer = joblib.load(self.input.vectorizer_filepath)
-            self.vectors = pd.read_csv(self.input.tf_idf_filepath)
+            self.vectors = load_npz(self.input.tf_idf_filepath)
             logger.info("Data and vectorizer loaded successfully.")
         except Exception as e:
             logger.error(f"Error loading input data: {e}")
@@ -45,9 +46,18 @@ class Prediction:
 
             # Vectorize the descriptions of these courses
             user_profile_vector = self.vectors[self.courses['course_id'].isin(rated_courses)].mean(axis=0)
+            # Ensure user_profile_vector is 2D
+            # Ensure user_profile_vector is a numpy array (not a matrix)
+            if isinstance(user_profile_vector, np.matrix):
+                user_profile_vector = np.asarray(user_profile_vector)
+            if user_profile_vector.ndim == 1:
+                user_profile_vector = user_profile_vector.reshape(1, -1)
+            # Ensure self.vectors is also a numpy array (not a matrix)
+            if isinstance(self.vectors, np.matrix):
+                self.vectors = np.asarray(self.vectors) 
 
             # Compute cosine similarities between the user profile vector and all course vectors
-            cosine_similarities = cosine_similarity([user_profile_vector], self.vectors).flatten()
+            cosine_similarities = cosine_similarity(user_profile_vector, self.vectors).flatten()
             top_n_indices = cosine_similarities.argsort()[-top_n:][::-1]
             content_recommendations = self.courses.iloc[top_n_indices]
             return content_recommendations['course_id'].tolist()

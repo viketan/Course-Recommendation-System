@@ -37,58 +37,35 @@ class Prediction:
             logger.error(f"Error in context-based recommendation for user {user_id}: {e}")
             raise CustomException(e, sys)
 
-    def item_item_recommendations(self, user_id, top_n=3):
+    def content_based_recommendations(self, user_id, top_n=3):
         try:
-            user_item_matrix = self.ratings.pivot(index='user_id', columns='course_id', values='rating').fillna(0)
-            user_ratings = user_item_matrix.loc[user_id]
-            rated_items = user_ratings[user_ratings > 0].index.tolist()
-            item_similarity = cosine_similarity(user_item_matrix.T)
-            item_recommendations = item_similarity.dot(user_ratings).flatten()
-            recommended_items = pd.Series(item_recommendations, index=user_item_matrix.columns).sort_values(ascending=False)
-            recommended_courses = recommended_items.index[~recommended_items.index.isin(rated_items)].tolist()
-            return recommended_courses[:top_n]
-        except Exception as e:
-            logger.error(f"Error in item-item recommendation for user {user_id}: {e}")
-            raise CustomException(e, sys)
+            # Get the courses the user has already rated
+            user_ratings = self.ratings[self.ratings['user_id'] == user_id]
+            rated_courses = user_ratings['course_id'].tolist()
 
-    def user_user_recommendations(self, user_id, top_n=3):
-        try:
-            user_item_matrix = self.ratings.pivot(index='user_id', columns='course_id', values='rating').fillna(0)
-            user_vector = user_item_matrix.loc[user_id].values.reshape(1, -1)
-            user_similarity = cosine_similarity(user_vector, user_item_matrix)[0]
-            similar_users = user_similarity.argsort()[-top_n-1:-1][::-1]
-            recommended_items = user_item_matrix.iloc[similar_users].mean(axis=0).sort_values(ascending=False)
-            recommended_courses = recommended_items.index[recommended_items > 0].tolist()
-            return recommended_courses[:top_n]
+            # Vectorize the descriptions of these courses
+            user_profile_vector = self.vectors[self.courses['course_id'].isin(rated_courses)].mean(axis=0)
+
+            # Compute cosine similarities between the user profile vector and all course vectors
+            cosine_similarities = cosine_similarity([user_profile_vector], self.vectors).flatten()
+            top_n_indices = cosine_similarities.argsort()[-top_n:][::-1]
+            content_recommendations = self.courses.iloc[top_n_indices]
+            return content_recommendations['course_id'].tolist()
         except Exception as e:
-            logger.error(f"Error in user-user recommendation for user {user_id}: {e}")
+            logger.error(f"Error in content-based recommendation for user {user_id}: {e}")
             raise CustomException(e, sys)
 
     def svd_recommendations(self, user_id, top_n=3):
         try:
-            # Create the user-item interaction matrix
             user_item_matrix = self.ratings.pivot(index='user_id', columns='course_id', values='rating').fillna(0)
-            
-            # Convert DataFrame to sparse matrix
             user_item_matrix_sparse = csr_matrix(user_item_matrix.values)
-            
-            # Perform SVD
             U, sigma, Vt = svds(user_item_matrix_sparse, k=20)
             sigma = np.diag(sigma)
-            
-            # Compute the user factors matrix
             user_factors = np.dot(np.dot(U, sigma), Vt)
-            
-            # Get the user ratings
             user_ratings = user_factors[user_id - 1]
-            
-            # Create a Series for recommended items
             recommended_items = pd.Series(user_ratings, index=user_item_matrix.columns).sort_values(ascending=False)
-            
-            # Filter and return top recommendations
             recommended_courses = recommended_items.index[recommended_items > 0].tolist()
             return recommended_courses[:top_n]
-        
         except Exception as e:
             logger.error(f"Error in SVD recommendation for user {user_id}: {e}")
             raise CustomException(e, sys)
@@ -97,16 +74,13 @@ class Prediction:
         try:
             if weights is None:
                 weights = {
-                    'user_user': 0.15,
-                    'item_item': 0.15,
-                    'svd': 0.3,
-                    'context': 0.4
+                    'svd': 0.4,
+                    'context': 0.3,
+                    'content': 0.3
                 }
-
-            user_user_recs = self.user_user_recommendations(user_id, top_n)
-            item_item_recs = self.item_item_recommendations(user_id, top_n)
             svd_recs = self.svd_recommendations(user_id, top_n)
             context_recs = self.match_courses_with_context(user_id, top_n)
+            content_recs = self.content_based_recommendations(user_id, top_n)
 
             course_scores = {}
 
@@ -117,10 +91,9 @@ class Prediction:
                     else:
                         course_scores[course] = weight
 
-            update_scores(user_user_recs, weights.get('user_user', 1.0))
-            update_scores(item_item_recs, weights.get('item_item', 1.0))
             update_scores(svd_recs, weights.get('svd', 1.0))
             update_scores(context_recs, weights.get('context', 1.0))
+            update_scores(content_recs, weights.get('content', 1.0))
 
             sorted_courses = sorted(course_scores.items(), key=lambda x: x[1], reverse=True)
             top_course_ids = [course_id for course_id, score in sorted_courses[:top_n]]

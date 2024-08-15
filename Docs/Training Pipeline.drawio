@@ -1,0 +1,51 @@
+<mxfile host="app.diagrams.net" agent="Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/127.0.0.0 Safari/537.36" version="24.7.7">
+  <diagram id="vazJQIsrBdPplPb7Ojjd" name="Page-1">
+    <mxGraphModel dx="794" dy="500" grid="1" gridSize="10" guides="1" tooltips="1" connect="1" arrows="1" fold="1" page="1" pageScale="1" pageWidth="850" pageHeight="1100" math="0" shadow="0">
+      <root>
+        <mxCell id="0" />
+        <mxCell id="1" parent="0" />
+        <mxCell id="tCjd09Jl-6tyxUQ7Vt4Y-9" style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;entryX=0.5;entryY=0;entryDx=0;entryDy=0;" edge="1" parent="1" source="tCjd09Jl-6tyxUQ7Vt4Y-1" target="tCjd09Jl-6tyxUQ7Vt4Y-2">
+          <mxGeometry relative="1" as="geometry">
+            <Array as="points">
+              <mxPoint x="675" y="520" />
+              <mxPoint x="355" y="520" />
+            </Array>
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="tCjd09Jl-6tyxUQ7Vt4Y-1" value="Data Transformation" style="rounded=0;whiteSpace=wrap;html=1;" vertex="1" parent="1">
+          <mxGeometry x="615" y="440" width="120" height="60" as="geometry" />
+        </mxCell>
+        <mxCell id="tCjd09Jl-6tyxUQ7Vt4Y-10" value="" style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;" edge="1" parent="1" source="tCjd09Jl-6tyxUQ7Vt4Y-2" target="tCjd09Jl-6tyxUQ7Vt4Y-5">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="tCjd09Jl-6tyxUQ7Vt4Y-2" value="Model Training" style="rounded=0;whiteSpace=wrap;html=1;" vertex="1" parent="1">
+          <mxGeometry x="295" y="560" width="120" height="60" as="geometry" />
+        </mxCell>
+        <mxCell id="tCjd09Jl-6tyxUQ7Vt4Y-6" value="" style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;" edge="1" parent="1" source="tCjd09Jl-6tyxUQ7Vt4Y-3" target="tCjd09Jl-6tyxUQ7Vt4Y-4">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="tCjd09Jl-6tyxUQ7Vt4Y-3" value="Data Ingestion" style="rounded=0;whiteSpace=wrap;html=1;" vertex="1" parent="1">
+          <mxGeometry x="245" y="440" width="120" height="60" as="geometry" />
+        </mxCell>
+        <mxCell id="tCjd09Jl-6tyxUQ7Vt4Y-7" value="" style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;" edge="1" parent="1" source="tCjd09Jl-6tyxUQ7Vt4Y-4" target="tCjd09Jl-6tyxUQ7Vt4Y-1">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="tCjd09Jl-6tyxUQ7Vt4Y-4" value="Data Validation" style="rounded=0;whiteSpace=wrap;html=1;" vertex="1" parent="1">
+          <mxGeometry x="440" y="440" width="120" height="60" as="geometry" />
+        </mxCell>
+        <mxCell id="tCjd09Jl-6tyxUQ7Vt4Y-5" value="Model Evaulation" style="rounded=0;whiteSpace=wrap;html=1;" vertex="1" parent="1">
+          <mxGeometry x="495" y="560" width="120" height="60" as="geometry" />
+        </mxCell>
+        <mxCell id="tCjd09Jl-6tyxUQ7Vt4Y-12" value="" style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;" edge="1" parent="1" source="tCjd09Jl-6tyxUQ7Vt4Y-11" target="tCjd09Jl-6tyxUQ7Vt4Y-3">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="tCjd09Jl-6tyxUQ7Vt4Y-11" value="" style="dashed=0;outlineConnect=0;html=1;align=center;labelPosition=center;verticalLabelPosition=bottom;verticalAlign=top;shape=mxgraph.webicons.mongodb;gradientColor=#DFDEDE" vertex="1" parent="1">
+          <mxGeometry x="115" y="440" width="80" height="60" as="geometry" />
+        </mxCell>
+        <mxCell id="tCjd09Jl-6tyxUQ7Vt4Y-13" value="Course recommendation System: Training pipeline" style="rounded=0;whiteSpace=wrap;html=1;" vertex="1" parent="1">
+          <mxGeometry x="275" y="390" width="300" height="30" as="geometry" />
+        </mxCell>
+      </root>
+    </mxGraphModel>
+  </diagram>
+</mxfile>

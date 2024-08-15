@@ -94,3 +94,4 @@ local_settings.py
 *.sqlite3
 
 # Ignore any other files or directories specific to your project
+/logs

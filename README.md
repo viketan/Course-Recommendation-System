@@ -1,5 +1,5 @@
 # Course Recommendation System
-![Course Recommendation System](Docs\portal.png)
+![Course Recommendation System](Docs/portal.png)
 
 ## Overview
 The Course Recommendation System is designed to help learners discover relevant courses based on their previous interactions and the content of available courses. This project leverages a hybrid approach, combining collaborative filtering and content-based filtering, to generate personalized course recommendations.
